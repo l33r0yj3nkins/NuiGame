@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body>
-    
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas" width=1280 height=720></canvas>
       <div id="unity-loading-bar">
@@ -19,14 +18,12 @@
       </div>
       <div id="unity-warning"> </div>
       <div id="unity-footer">
-        <button name="button" type="button"
-        style="margin: 8px; padding: 8px; background-color: darkblue; color: aliceblue; border: none;border-radius: 4px;font-size: 12px" onclick=getAccount()>Connect Your Wallet</button>
+        <div id="unity-webgl-logo"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Full Screen</div>
+        <div id="unity-build-title">webgl son</div>
       </div>
     </div>
     <script>
-      var myGameInstance;
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var loadingBar = document.querySelector("#unity-loading-bar");
@@ -40,7 +37,6 @@
       // Modify or remove this function to customize the visually presented
       // way that non-critical warnings and error messages are presented to the
       // user.
-
       function unityShowBanner(msg, type) {
         function updateBannerVisibility() {
           warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
@@ -60,11 +56,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/WebGl.loader.js";
+      var loaderUrl = buildUrl + "/Webglwallet.loader.js";
       var config = {
-        dataUrl: buildUrl + "/WebGl.data.unityweb",
-        frameworkUrl: buildUrl + "/WebGl.framework.js.unityweb",
-        codeUrl: buildUrl + "/WebGl.wasm.unityweb",
+        dataUrl: buildUrl + "/Webglwallet.data.unityweb",
+        frameworkUrl: buildUrl + "/Webglwallet.framework.js.unityweb",
+        codeUrl: buildUrl + "/Webglwallet.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "LaunchArt",
         productName: "webgl son",
@@ -97,7 +93,6 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
-          myGameInstance = unityInstance;
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
@@ -107,31 +102,6 @@
         });
       };
       document.body.appendChild(script);
-
-      const getProvider = () => {
-
-      if ('phantom' in window) {
-
-          const provider = window.phantom?.solana;
-
-          if (provider?.isPhantom) {
-              return provider;
-          }
-      }
-
-      window.open('https://phantom.app/', '_blank');
-      };
-
-      async function getAccount() {
-      const provider = getProvider(); // see "Detecting the Provider"
-      try {
-          const resp = await provider.connect();
-          myGameInstance.SendMessage('WebInterface','ConnectWallet',resp.publicKey.toString());
-          // 26qv4GCcx98RihuK3c4T6ozB3J7L6VwCuFVc7Ta2A3Uo 
-      } catch (err) {
-          // { code: 4001, message: 'User rejected the request.' }
-      }
-}
     </script>
   </body>
 </html>
